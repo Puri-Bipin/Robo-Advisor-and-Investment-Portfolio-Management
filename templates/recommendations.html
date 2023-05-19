@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <h2>Portfolio Performance</h2>
+  <table>
+    <tr>
+      <th>Symbol</th>
+      <th>Stock Name</th>
+      <th>Average Return</th>
+      <th>Volatility</th>
+      <th>Previous Close($)</th>
+      <th>Open($)</th>
+      <th>Day Low($)</th>
+      <th>Day High($)</th>
+      <th>Price Trend</th>
+    </tr>
+    {% for symbol, performance in portfolio_performance.items() %}
+    <tr>
+      <td>{{ performance['Symbol'] }}</td>
+      <td>{{ performance['Stock Name'] }}</td>
+      <td>{{ "%.2f%%" % (performance['Average Return'] * 100) }}</td>
+      <td>{{ "%.2f%%" % (performance['Volatility'] * 100) }}</td>
+      <td>{{ performance['Previous Close'] }}</td>
+      <td>{{ performance['Open'] }}</td>
+      <td>{{ performance['Day Low'] }}</td>
+      <td>{{ performance['Day High'] }}</td>
+      <td>
+        {% if performance['Previous Close'] < performance['Open'] %}
+          <span style="color: green">&#x25B2;</span>  
+        {% elif performance['Previous Close'] > performance['Open'] %}
+          <span style="color: red">&#x25BC;</span> 
+        {% else %}
+          No Change
+        {% endif %}
+
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <title>Investment Recommendations</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h2>Investment Recommendations</h2>
+  <p>Based on your input, here are our recommendations:</p>
+
+  <table>
+    <tr>
+      <th>Symbol</th>
+      <th>Stock Name</th>
+      <th>Average Return</th>
+    </tr>
+    {% for recommendation in recommendations %}
+    <tr>
+      <td>{{ recommendation[0] }}</td>
+      <td>{{ recommendation[1] }}</td>
+      <td>{{ "%.2f%%" % (recommendation[2] * 100) }}</td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <div style="display: flex;">
+          <div style="flex: 50%;">
+            <img src="{{ url_for('static', filename='charts/' + recommendation[0] + '_bar.png') }}" alt="Bar Chart" width="600" height="400">
+          </div>
+          <div style="flex: 50%;">
+            <img src="{{ url_for('static', filename='charts/' + recommendation[0] + '_line.png') }}" alt="Line Chart" width="600" height="400">
+          </div>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+
+</body>
+</html>

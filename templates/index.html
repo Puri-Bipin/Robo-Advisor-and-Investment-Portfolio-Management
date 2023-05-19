@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Robo-Advisor</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    .container {
+      position: relative;
+    }
+
+    .loading-screen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Robo-Advisor</h1>
+    <form id="preferencesForm" action="{{ url_for('get_recommendations') }}" method="POST">
+      <label for="riskTolerance">Risk Tolerance:</label>
+      <select id="riskTolerance" name="riskTolerance">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
+
+      <label for="investmentAmount">Investment Amount in Dollars:</label>
+      <input type="text" id="investmentAmount" name="investmentAmount" placeholder="Enter the amount">
+
+      <label for="investmentDuration">Investment Duration in Days:</label>
+      <input type="text" id="investmentDuration" name="investmentDuration" placeholder="Enter the duration">
+
+      <button type="submit" onclick="showLoadingScreen()">Submit</button>
+    </form>
+
+    <div id="notification"></div>
+  </div>
+
+  <div class="loading-screen" id="loadingScreen">
+    <p>Loading...</p>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    function showLoadingScreen() {
+      document.getElementById('loadingScreen').style.display = 'flex';
+    }
+  </script>
+</body>
+</html>
